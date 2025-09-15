@@ -1,0 +1,248 @@
+# 🔒 BUAA选课系统 - Git忽略文件
+# 防止敏感信息和临时文件被提交到Git仓库
+
+# =============================================================================
+# 🚨 敏感信息文件 (绝对不能提交)
+# =============================================================================
+
+# 包含真实用户名密码的配置文件
+config_simple_real.json
+config_real.json
+config_personal.json
+*_personal.json
+*_real.json
+
+# 可能包含token的文件
+token.txt
+secret.txt
+auth_info.json
+credentials.json
+
+# 备份的配置文件
+*.backup
+config*.bak
+
+# =============================================================================
+# 📁 日志和临时文件
+# =============================================================================
+
+# 日志目录
+logs/
+*.log
+*.log.*
+
+# 临时文件
+tmp/
+temp/
+*.tmp
+*.temp
+
+# secretVal提取的缓存文件
+secret_val_cache.txt
+extracted_secret.txt
+
+# =============================================================================
+# 🐍 Python相关
+# =============================================================================
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# =============================================================================
+# 🌐 Playwright相关
+# =============================================================================
+
+# Playwright浏览器下载
+.playwright/
+
+# 测试报告
+test-results/
+playwright-report/
+
+# 截图和视频
+screenshots/
+videos/
+
+# =============================================================================
+# 💻 IDE和编辑器
+# =============================================================================
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Qoder IDE
+.qoder/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# =============================================================================
+# 🖥️ 操作系统
+# =============================================================================
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# =============================================================================
+# 📦 其他
+# =============================================================================
+
+# 压缩文件
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# 数据库文件
+*.db
+*.sqlite
+*.sqlite3
+
+# 配置文件备份
+*.orig
+
+# Node.js (如果项目中有前端组件)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =============================================================================
+# 📝 项目特定
+# =============================================================================
+
+# 测试用的课程数据
+test_courses.json
+course_test_data.json
+
+# 开发时的调试文件
+debug_*.py
+test_*.py
+
+# 用户自定义脚本
+user_scripts/
+custom_*.py
+
+# 说明：config_simple.json 文件会被包含在仓库中，但它只包含空的模板，不包含真实的用户信息

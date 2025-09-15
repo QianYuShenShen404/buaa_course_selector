@@ -1,12 +1,12 @@
 {
   "user_credentials": {
-    "username": "23371020",
-    "password": "cc2005012"
+    "username": "",
+    "password": ""
   },
   "course_info": {
-    "course_id": "202520261B060032020001",
-    "batch_id": "d6d090c4364342bc94de17a22eaf7068",
-    "course_name": "计算机工程中最优化的方法"
+    "course_id": "",
+    "batch_id": "",
+    "course_name": ""
   },
   "browser_config": {
     "headless": false,

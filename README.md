@@ -3,6 +3,8 @@
 [![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/)
 [![Success Rate](https://img.shields.io/badge/success%20rate-95%25-brightgreen)](https://github.com/)
 [![Architecture](https://img.shields.io/badge/architecture-hybrid-orange)](https://github.com/)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-Windows-lightgrey)](https://www.microsoft.com/windows/)
 
 > 🚀 专为北航学生打造的智能选课助手，采用先进的混合架构设计，带来极致的选课体验！
 
@@ -44,11 +46,11 @@
 
 1. **下载项目**
 ```bash
-# 如果从Git克隆
-git clone <repository-url>
-cd buaa_course_selection_beta
+# 从GitHub克隆项目
+git clone https://github.com/your-username/buaa_course_selection_beta_dev.git
+cd buaa_course_selection_beta_dev
 
-# 或者直接解压项目文件包到此目录
+# 或者下载ZIP文件并解压到此目录
 ```
 
 2. **安装Python依赖**
@@ -234,10 +236,28 @@ python main_v2_hybrid.py --test
 1. 查看本README的故障排除部分
 2. 检查 `logs/` 目录中的日志文件
 3. 运行测试模式验证配置
+4. 在GitHub Issues中搜索类似问题
+5. 提交新的Issue（包含详细信息和日志）
+
+## 🤝 贡献指南
+
+欢迎提交Issue和Pull Request来帮助改进项目！
+
+### 如何贡献
+1. Fork 本仓库
+2. 创建你的特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交你的更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 创建一个 Pull Request
+
+### 报告问题
+- 使用GitHub Issues报告bug
+- 提供详细的复现步骤
+- 包含相关的日志文件（请移除敏感信息）
 
 ## 📄 开源协议
 
-本项目采用 MIT 协议开源
+本项目采用 MIT 协议开源 - 详见 [LICENSE](LICENSE) 文件
 
 ## ⚠️ 免责声明
 

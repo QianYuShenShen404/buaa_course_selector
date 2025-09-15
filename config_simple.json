@@ -1,0 +1,25 @@
+{
+  "user_credentials": {
+    "username": "23371020",
+    "password": "cc2005012"
+  },
+  "course_info": {
+    "course_id": "202520261B060032020001",
+    "batch_id": "d6d090c4364342bc94de17a22eaf7068",
+    "course_name": "计算机工程中最优化的方法"
+  },
+  "browser_config": {
+    "headless": false,
+    "timeout": 30000,
+    "slow_mo": 1000,
+    "viewport_width": 1280,
+    "viewport_height": 720
+  },
+  "logging": {
+    "level": "INFO",
+    "file_path": "logs/hybrid_course_selector.log",
+    "max_size_mb": 100,
+    "backup_count": 5,
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  }
+}

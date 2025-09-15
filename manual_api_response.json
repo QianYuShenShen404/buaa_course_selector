@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<!--解决idea thymeleaf 表达式模板报红波浪线-->
+<!--suppress ALL -->
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>学生选课</title>
+    <link rel="icon" href="data:;base64,=">
+    <link rel="stylesheet" href="https://byxk.buaa.edu.cn/xsxk/profile/element-ui/theme-chalk/index.css?v=1757872800003">
+    <link rel="stylesheet" href="https://byxk.buaa.edu.cn/xsxk/profile/css/index.min.css?v=1757872800003">
+</head>
+<body>
+
+    <div id="xsxkapp" class="indexPage" :class="isPc?'isPc':'isMobile'">
+        <div class="header cv-clearfix">
+            <img class="cv-pull-left logo-img" src="https://byxk.buaa.edu.cn/xsxk/profile/image/logo-mini.png?v=1757872800003">
+            <span class="cv-pull-right" v-if="isLogined" @click="logout">退出</span>
+        </div>
+        <div class="banner">
+            <div class="banner-bg">
+                <img v-if="isPc" src="https://byxk.buaa.edu.cn/xsxk/profile/image/banner.jpg">
+                <div class="bg-blue"></div>
+            </div>
+            <el-row>
+                <el-col v-if="isPc" :span="this.publicInfo.lcWidth.headItemWidth1">
+                    <div class="cv-stage-cont">
+                        <nav id="cvStageAxis" class="cv-stage-axis">
+                            <div class="cv-block cv-active">
+                                <div class="cv-row">
+                                    <div class="cv-left"></div>
+                                    <div class="cv-cycle"></div>
+                                    <div class="cv-right">2025-09-08 13:00:00</div>
+                                </div>
+                                <div class="cv-row">
+                                    <div class="cv-left">2025年秋季学期补退选含重修</div>
+                                    <div class="cv-line" style="height: 60px;"></div>
+                                    <div class="cv-right"></div>
+                                </div>
+                                <div class="cv-row">
+                                    <div class="cv-left"></div>
+                                    <div class="cv-cycle"></div>
+                                    <div class="cv-right">2025-09-19 17:00:00</div>
+                                </div>
+                                <div class="cv-row">
+                                    <div class="cv-left"></div>
+                                    <div class="cv-line-dotted"></div>
+                                    <div class="cv-right"></div>
+                                </div>
+                            </div>
+                            <div class="cv-block cv-active">
+                                <div class="cv-row">
+                                    <div class="cv-left"></div>
+                                    <div class="cv-cycle"></div>
+                                    <div class="cv-right">2025-09-08 13:00:00</div>
+                                </div>
+                                <div class="cv-row">
+                                    <div class="cv-left">2025年秋季学期本选研（仅2022级）</div>
+                                    <div class="cv-line" style="height: 60px;"></div>
+                                    <div class="cv-right"></div>
+                                </div>
+                                <div class="cv-row">
+                                    <div class="cv-left"></div>
+                                    <div class="cv-cycle"></div>
+                                    <div class="cv-right">2025-09-19 17:00:00</div>
+                                </div>
+                                <div class="cv-row">
+                                    <div class="cv-left"></div>
+                                    <div class="cv-line-dotted"></div>
+                                    <div class="cv-right"></div>
+                                </div>
+                            </div>
+                            <div class="cv-block cv-active">
+                                <div class="cv-row">
+                                    <div class="cv-left"></div>
+                                    <div class="cv-cycle"></div>
+                                    <div class="cv-right">2025-09-09 09:00:00</div>
+                                </div>
+                                <div class="cv-row">
+                                    <div class="cv-left">2025年秋季学期研选本</div>
+                                    <div class="cv-line" style="height: 60px;"></div>
+                                    <div class="cv-right"></div>
+                                </div>
+                                <div class="cv-row">
+                                    <div class="cv-left"></div>
+                                    <div class="cv-cycle"></div>
+                                    <div class="cv-right">2025-09-19 18:00:00</div>
+                                </div>
+                                <div class="cv-row">
+                                    <div class="cv-left"></div>
+                                    <div class="cv-line-dotted"></div>
+                                    <div class="cv-right"></div>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                </el-col>
+                <el-col v-if="isPc" :span="this.publicInfo.lcWidth.headItemWidth2">
+                    <div class="cv-countDown">
+                        <!--倒计时标题-->
+                        <h2>
+                            <span id="cvStageName" class="cvStageNamesf">{{lcParam.currentBatch.name}}</span>
+                            <button class="cv-btn cv-tag" type="button" id="stateMsg">{{lcParam.currentBatch.state}}</button>
+                        </h2>
+
+                        <!--倒计时区域-->
+                        <div class="cv-mb-38">
+                            <div class="cv-countDown-start-text" id="timeMsg"></div>
+                            <div id="cvFlipClock">
+                                <span class="flipClocklabel">{{lcParam.currentBatch.timeLable}}</span>
+                                <span class="timeNUmber">{{lcParam.currentBatch.timeDays2}}</span>
+                                <span class="timeNUmber">{{lcParam.currentBatch.timeDays1}}</span>
+                                <span class="timeLabel">天</span>
+                                <span class="timeNUmber">{{lcParam.currentBatch.timeHours2}}</span>
+                                <span class="timeNUmber">{{lcParam.currentBatch.timeHours1}}</span>
+                                <span class="timeLabel">小时</span>
+                                <span class="timeNUmber">{{lcParam.currentBatch.timeMinutes2}}</span>
+                                <span class="timeNUmber">{{lcParam.currentBatch.timeMinutes1}}</span>
+                                <span class="timeLabel">分钟</span>
+                            </div>
+                        </div>
+                        <!--选课模式说明-->
+                        <div class="cv-clearfix-child">
+                            <div class="cv-countDown-option">
+                                <div class="cv-mb-38 lcTimeDisplay">
+                                    <h3 id="cvStageModeName">{{lcParam.currentBatch.typeName}}</h3>
+                                    <span>选课模式</span>
+                                </div>
+                                <div>
+                                    <h5 id="cvStageStartTime">{{lcParam.currentBatch.beginTime}}</h5>
+                                    <span>开始时间</span>
+                                </div>
+                            </div>
+
+                            <div class="cv-countDown-option">
+                                <div class="cv-mb-38 lcTimeDisplay">
+                                    <h3 id="cvCourseSelectionStrategy">{{lcParam.currentBatch.tacticName}}</h3>
+                                    <span>选课策略</span>
+                                </div>
+                                <div>
+                                    <h5 id="cvStageEndTime">{{lcParam.currentBatch.endTime}}</h5>
+                                    <span>结束时间</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </el-col>
+                
+                <el-col :span="this.publicInfo.lcWidth.headItemWidth3">
+                    <div class="cv-login" id="loginDiv" v-if="!isLogined">
+                        <template v-if="isLdapLogin">
+                            <h2>登录</h2>
+                            <div class="sub-title">
+                                <div>LOGIN</div>
+                                <div>选课系统请输入用户</div>
+                            </div>
+                            <div id="loginNameDiv">
+                                <el-input :placeholder="loginForm.namePlaceHolder" @keyup.enter.native="login" v-model="loginForm.name">
+                                    <template slot="prepend"><i class="el-icon-user-solid"></i></template>
+                                </el-input>
+                            </div>
+                            <div id="loginPwdDiv">
+                                <el-input placeholder="请输入密码" type="password" @keyup.enter.native="login" v-model="loginForm.password">
+                                    <template slot="prepend"><i class="el-icon-s-goods"></i></template>
+                                </el-input>
+                            </div>
+                            <div class="cv-verification-code" :vodeType="loginForm.vodeType">
+                                <el-row v-if="loginForm.vodeType != '2'">
+                                    <el-col :span="16">
+                                        <el-input id="verifyCode" @keyup.enter.native="login" v-model="loginForm.verifyCode" placeholder="验证码">
+                                        </el-input>
+                                    </el-col>
+                                    <el-col :span="8">
+                                        <img @click="initCaptcha" id="vcodeImg" :src="loginForm.verifyCodeUrl">
+                                    </el-col>
+                                </el-row>
+                                <el-row v-else>
+                                    <el-col :span="24" class="verifynewcontainer">
+                                        <img @click="clickCaptcha" id="vcodeImg" :src="loginForm.verifyCodeUrl">
+                                        <i @click="initCaptcha" class="verify-refresh el-icon-refresh"></i>
+                                        <template v-for="(verifyObj, index) in loginForm.verifyResult">
+                                            <div class="yidun_icon-point" :class="'yidun_point-' + (index + 1)" :style="{left:(verifyObj.left - 13) + 'px', top:(verifyObj.top - 33) + 'px'}"></div>
+                                        </template>
+                                    </el-col>
+                                </el-row>
+                            </div>
+                            <!--<el-button class="longin-button" type="primary" round @click="login">{{ $t("login.signIn") }}</el-button>-->
+                            <el-button class="longin-button" type="primary" round @click="login">登 录</el-button>
+                            <!--多语系 start-->
+                            <template v-if="i18nEnabled">
+                                <div style="position: absolute;right: 23px;bottom: 0px;">
+                                    <el-row class="block-col-2">
+                                        <el-col>
+                                            <el-dropdown trigger="click" @command="handleCommand">
+                                                <span class="el-dropdown-link">
+                                                    <input type="hidden" id="langHid" value="zh_CN">
+                                                    <span id="langSpan">中文</span><i class="el-icon-arrow-down el-icon--right"></i>
+                                                </span>
+                                                <el-dropdown-menu slot="dropdown">
+                                                    <el-dropdown-item v-for="(value,key) in langData"  :command="key" >{{value}}</el-dropdown-item>
+                                                </el-dropdown-menu>
+                                            </el-dropdown>
+                                        </el-col>
+                                    </el-row>
+                                </div>
+                            </template>
+                            <!--多语系 end-->
+                        </template>
+                    </div>
+                    <div class="cv-user" v-else id="stundentinfoDiv">
+                        <div class="cv-clearfix">
+                            <div class="cv-user-info-img cv-pull-left">
+                                <img src="https://byxk.buaa.edu.cn/xsxk/profile/image/male84_114.png">
+                            </div>
+                            <div class="cv-user-info-option cv-pull-left">
+                                <h5 class="cv-mb-8">
+                                    欢迎你
+                                    <span>{{studentInfo.XM}}</span>
+                                </h5>
+                                <div class="cv-mb-4">{{studentInfo.YXMC}}/{{studentInfo.ZYMC}}</div>
+                                <div>{{studentInfo.NJ}}级</div>
+                            </div>
+                        </div>
+
+                        <!--图表部分-->
+<div class="cv-credit-chart">
+    <canvas id="cvCreditChart" width="152" height="152"></canvas>
+</div>
+
+
+                        <!--进入选课按钮-->
+                        <el-button class="courseBtn" type="primary" round @click="startChoose">选课</el-button>
+                    </div>
+                </el-col>
+            </el-row>
+        </div>
+        <div class="cards-container">
+            <el-row>
+                <el-col :span="publicInfo.cardWidth">
+                    <div class="cv-service-manual item-card">
+                        <h3>操作手册</h3>
+                        <div class="content">
+                            <a target="_blank" href="https://byxk.buaa.edu.cn/xsxk/profile/image/help.png">
+                            <img src="https://byxk.buaa.edu.cn/xsxk/profile/image/service-manual-bg.png">
+                            </a>
+                            <div class="message">
+                                <div>一张图</div>
+                                <div>看懂</div>
+                                <div>该怎么选课</div>
+                            </div>
+                        </div>
+                    </div>
+                </el-col>
+                <el-col :span="publicInfo.cardWidth">
+                    <div class="cv-notification item-card">
+                        <h3>通知公告</h3>
+                        <div class="cv-notification-list">
+                            <div class="cv-notification-list">
+                                
+                                <a class="el-link el-link--primary is-underline" target="_blank" href="https://byxk.buaa.edu.cn/xsxk/profile/notice/more.html?v=1757872800003">
+                                    <span class="el-link--inner">查看更多...</span>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="publicInfo.cardWidth">
+                    <div class="cv-problem item-card">
+                        <h3>常见问题</h3>
+                        <div class="cv-problem-list">
+                            
+
+                            <a class="el-link el-link--primary is-underline" target="_blank" href="https://byxk.buaa.edu.cn/xsxk/profile/faq/more.html?v=1757872800003">
+                                <span class="el-link--inner">查看更多...</span>
+                            </a>
+                        </div>
+                    </div>
+                </el-col>
+                <el-col :span="publicInfo.cardWidth">
+                    <div class="cv-consulting item-card">
+                        <h3>咨询方式</h3>
+                        <div class="cv-consulting-content" v-if="isPc">
+                            <img src="https://byxk.buaa.edu.cn/xsxk/profile/image/notification-announcement-bg.png">
+                            <div class="sub-title">教务处</div>
+                            <div class="cv-consulting-phone">
+                                <div class="cv-mb-4 line"></div>
+                                <div class="line"></div>
+                            </div>
+                            <div class="cv-consulting-other">
+                                <div class="cv-mb-4 line"></div>
+                                <div class="line"></div>
+                            </div>
+                        </div>
+                        <div class="cv-consulting-content-mobile" v-else>
+                            <div class="sub-title">教务处</div>
+                            <div class="cv-consulting-phone">
+                                <div class="cv-mb-4 line">
+                                    <span>手机：</span>
+                                    <span></span>
+                                </div>
+                                <div class="line" >
+                                    <span>电话：</span>
+                                    <span></span>
+                                </div>
+                            </div>
+                            <div class="cv-consulting-other">
+                                <div class="cv-mb-4 line">
+                                    <span>邮箱：</span>
+                                    <span></span>
+                                </div>
+                                <div class="line">
+                                    <span>QQ：</span>
+                                    <span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </el-col>
+            </el-row>
+        </div>
+        <footer class="cv-page-footer">
+            <div class="cv-noline-tip" v-if="publicInfo.onlineNumber>0">（本轮选课峰值人数 {{publicInfo.onlineNumber}}人）</div>
+            <div class="cv-copyright"></div>
+        </footer>
+        <el-button v-if="isLogined && (lcParam.electiveBatchList.length + lcParam.expElectiveBatchList.length) > 1"
+                   class="qhlc-btn" type="primary" round @click="changeBatch('change')">切换轮次</el-button>
+        <el-dialog :title="lcParam.title" class="lcxz-window" :visible.sync="lcParam.changeBatchVisible" :lock-scroll="true"
+                   :close-on-click-modal="false"  width="80%">
+            <div class="lcxz lllcxz_container" v-if="lcParam.electiveBatchList.length > 0">
+                <div class="title">选课轮次</div>
+                <table v-if="isPc">
+                    <tr>
+                        <th class="cz">操作</th>
+                        <th class="lcmc">轮次名称</th>
+                        <th class="kssj">开始时间</th>
+                        <th class="jssj">结束时间</th>
+                        <th class="sfkkxq">重修是否可跨校区</th>
+                        <th class="sfkkxq">非重修是否可跨校区</th>
+                        <th class="sfkct">是否可冲突</th>
+                        <th class="bkxyy">不可选原因</th>
+                    </tr>
+                    <tr v-for="lllc in lcParam.electiveBatchList" :key="lllc.code"  @click="selectLcCard(lllc)">
+                        <td class="cz">
+                            <el-radio v-if="lllc.canSelect=='1'" v-model="lcParam.lcSelected" :label="lllc" name="lcxz">
+                                {{lllc.emptyValueTmp}}</el-radio>
+                        </td>
+                        <td class="lcmc">
+                            <div>{{lllc.name}}</div>
+                        </td>
+                        <td class="kssj">
+                            <div>{{lllc.beginTime}}</div>
+                        </td>
+                        <td class="jssj">
+                            <div>{{lllc.endTime}}</div>
+                        </td>
+                        <td class="sfkkxq">
+                            <div>{{lllc.retakeMultiCampus=='1'?'是':'否'}}</div>
+                        </td>
+                        <td class="sfkkxq">
+                            <div>{{lllc.notRetakeMultiCampus=='1'?'是':'否'}}</div>
+                        </td>
+                        <td class="sfkct">
+                            <div>{{lllc.noCheckTimeConflict=='1'?'是':'否'}}</div>
+                        </td>
+                        <td class="bkxyy">
+                            <div v-if="lllc.canSelect != '1'">{{lllc.noSelectReason}}</div>
+                        </td>
+                    </tr>
+                </table>
+                <table v-else>
+                    <tr v-for="lllc in lcParam.electiveBatchList" :key="lllc.code">
+                        <td class="cz" @click="selectLcCard(lllc)">
+                            <el-card class="box-card">
+                                <div class="card-item cv-clearfix">
+                                    <div class="left cv-pull-left">轮次名称:</div>
+                                    <div class="right cv-pull-left">{{lllc.name}}</div>
+                                </div>
+                                <div class="card-item cv-clearfix">
+                                    <div class="left cv-pull-left">开始时间:</div>
+                                    <div class="right cv-pull-left">{{lllc.beginTime}}</div>
+                                </div>
+                                <div class="card-item cv-clearfix">
+                                    <div class="left cv-pull-left">结束时间:</div>
+                                    <div class="right cv-pull-left">{{lllc.endTime}}</div>
+                                </div>
+                                <div class="card-item cv-clearfix">
+                                    <div class="left cv-pull-left">重修是否可跨校区:</div>
+                                    <div class="right cv-pull-left">{{lllc.retakeMultiCampus=='1'?'是':'否'}}</div>
+                                </div>
+                                <div class="card-item cv-clearfix">
+                                    <div class="left cv-pull-left">非重修是否可跨校区:</div>
+                                    <div class="right cv-pull-left">{{lllc.notRetakeMultiCampus=='1'?'是':'否'}}</div>
+                                </div>
+                                <div class="card-item cv-clearfix">
+                                    <div class="left cv-pull-left">是否可冲突:</div>
+                                    <div class="right cv-pull-left">{{lllc.noCheckTimeConflict=='1'?'是':'否'}}</div>
+                                </div>
+                                <div class="card-item cv-clearfix" v-if="lllc.canSelect != '1'">
+                                    <div class="left cv-pull-left">不可选原因:</div>
+                                    <div class="right cv-pull-left">{{lllc.noSelectReason}}</div>
+                                </div>
+                                <div class="card-item cv-clearfix">
+                                    <div class="left cv-pull-left">选择:</div>
+                                    <div class="right cv-pull-left">
+                                        <el-radio v-if="lllc.canSelect=='1'" v-model="lcParam.lcSelected" :label="lllc" name="lcxz">
+                                            {{lllc.emptyValueTmp}}</el-radio>
+                                    </div>
+                                </div>
+                            </el-card>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="lcxz-container"
+                 v-if="lcParam.lcSelected && lcParam.lcSelected.batchType != '02' && lcParam.lcSelected.needConfirm == '1' && lcParam.lcSelected.isConfirmed != '1'">
+                <div class="title">轮次须知</div>
+                <div class="xznr-content" style="margin-top: 5px;">
+                    {{lcParam.lcSelected.confirmInfo}}
+                </div>
+                <el-checkbox v-model="lcParam.agreeLcxz">已阅读须知，并同意</el-checkbox>
+            </div>
+            <div class="lcxz sylcxz_container" v-if="lcParam.expElectiveBatchList.length > 0">
+                <div class="title">实验课选课轮次</div>
+                <table v-if="isPc">
+                    <tr>
+                        <th class="cz">操作</th>
+                        <th class="lcmc">轮次名称</th>
+                        <th class="kssj">开始时间</th>
+                        <th class="jssj">结束时间</th>
+                        <th class="sfkkxq">重修是否可跨校区</th>
+                        <th class="sfkkxq">非重修是否可跨校区</th>
+                        <th class="sfkct">是否可冲突</th>
+                        <th class="bkxyy">不可选原因</th>
+                    </tr>
+                    <tr v-for="sylc in lcParam.expElectiveBatchList" :key="sylc.code"  @click="selectLcCard(lllc)">
+                        <td class="cz">
+                            <el-radio v-if="sylc.canSelect=='1'" v-model="lcParam.lcSelected" :label="sylc" name="lcxz">
+                                {{sylc.emptyValueTmp}}</el-radio>
+                        </td>
+                        <td class="lcmc">
+                            <div>{{sylc.name}}</div>
+                        </td>
+                        <td class="kssj">
+                            <div>{{sylc.beginTime}}</div>
+                        </td>
+                        <td class="jssj">
+                            <div>{{sylc.endTime}}</div>
+                        </td>
+                        <td class="sfkkxq">
+                            <div>{{sylc.retakeMultiCampus=='1'?'是':'否'}}</div>
+                        </td>
+                        <td class="sfkkxq">
+                            <div>{{sylc.notRetakeMultiCampus=='1'?'是':'否'}}</div>
+                        </td>
+                        <td class="sfkct">
+                            <div>{{sylc.noCheckTimeConflict=='1'?'是':'否'}}</div>
+                        </td>
+                        <td class="bkxyy">
+                            <div v-if="sylc.canSelect != '1'">{{sylc.noSelectReason}}</div>
+                        </td>
+                    </tr>
+                </table>
+                <table v-else>
+                    <tr v-for="sylc in lcParam.expElectiveBatchList" :key="sylc.code">
+                        <td class="cz" @click="selectLcCard(sylc)">
+                            <el-card class="box-card">
+                                <div class="card-item cv-clearfix">
+                                    <div class="left cv-pull-left">轮次名称:</div>
+                                    <div class="right cv-pull-left">{{sylc.name}}</div>
+                                </div>
+                                <div class="card-item cv-clearfix">
+                                    <div class="left cv-pull-left">开始时间:</div>
+                                    <div class="right cv-pull-left">{{sylc.beginTime}}</div>
+                                </div>
+                                <div class="card-item cv-clearfix">
+                                    <div class="left cv-pull-left">结束时间:</div>
+                                    <div class="right cv-pull-left">{{sylc.endTime}}</div>
+                                </div>
+                                <div class="card-item cv-clearfix">
+                                    <div class="left cv-pull-left">重修是否可跨校区:</div>
+                                    <div class="right cv-pull-left">{{sylc.retakeMultiCampus=='1'?'是':'否'}}</div>
+                                </div>
+                                <div class="card-item cv-clearfix">
+                                    <div class="left cv-pull-left">非重修是否可跨校区:</div>
+                                    <div class="right cv-pull-left">{{sylc.notRetakeMultiCampus=='1'?'是':'否'}}</div>
+                                </div>
+                                <div class="card-item cv-clearfix">
+                                    <div class="left cv-pull-left">是否可冲突:</div>
+                                    <div class="right cv-pull-left">{{sylc.noCheckTimeConflict=='1'?'是':'否'}}</div>
+                                </div>
+                                <div class="card-item cv-clearfix" v-if="sylc.canSelect != '1'">
+                                    <div class="left cv-pull-left">不可选原因:</div>
+                                    <div class="right cv-pull-left">{{sylc.noSelectReason}}</div>
+                                </div>
+                                <div class="card-item cv-clearfix">
+                                    <div class="left cv-pull-left">选择:</div>
+                                    <div class="right cv-pull-left">
+                                        <el-radio v-if="sylc.canSelect=='1'" v-model="lcParam.lcSelected" :label="sylc" name="lcxz">
+                                            {{sylc.emptyValueTmp}}</el-radio>
+                                    </div>
+                                </div>
+                            </el-card>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="closeChooseBatch">确 定</el-button>
+                <el-button @click="cancelChooseBatch" v-if="lcParam.lcSelected && ((lcParam.lcSelected.batchType != '02' && lcParam.lcSelected.needConfirm == '1' && lcParam.lcSelected.isConfirmed == '1') || lcParam.lcSelected.needConfirm == '0')">取消</el-button>
+            </span>
+        </el-dialog>
+        <el-backtop target="body" :bottom="100" :right="30" :visibility-height="0">
+            <div style="
+                height: 100%;
+                width: 100%;
+                background-color: #f2f5f6;
+                box-shadow: 0 0 6px rgba(0,0,0, .12);
+                text-align: center;
+                border-radius: 50%;
+                line-height: 40px;
+                color: #1989fa;
+                ">
+                <i class="el-icon-top"></i>
+            </div>
+        </el-backtop>
+    </div>
+
+    <script src="https://byxk.buaa.edu.cn/xsxk/profile/js/common.js"></script>
+<!--<script type="text/javascript" th:src="${conf.staticCtx}+'/js/vue-i18n.js'"></script>-->
+<!--<script type="text/javascript" th:src="${conf.staticCtx}+'/js/lang/en.js'"></script>-->
+<!--<script type="text/javascript" th:src="${conf.staticCtx}+'/js/lang/zh.js'"></script>-->
+<script>
+    window.baseServiceUrl = "https:\/\/byxk.buaa.edu.cn\/xsxk\/profile";
+    axios.defaults.baseURL =  "https:\/\/byxk.buaa.edu.cn\/xsxk";
+    window.socketServiceUrl = "wss:\/\/byxk.buaa.edu.cn\/xsxk"+'/websocket/';
+    window.axiosKey = 'Authorization';
+</script>
+<script type="text/javascript" src="https://byxk.buaa.edu.cn/xsxk/profile/js/config.min.js"></script>
+    <script type="text/javascript" src="https://byxk.buaa.edu.cn/xsxk/profile/js/xfimage.min.js"></script>
+    <script type="text/javascript" src="https://byxk.buaa.edu.cn/xsxk/profile/js/cryptojs.js"></script>
+    <script type="text/javascript" src="https://byxk.buaa.edu.cn/xsxk/profile/js/index.min.js?v=1757872800003"></script>
+    <script type="text/javascript" src="https://byxk.buaa.edu.cn/xsxk/profile/browerTips/browerTips.js?v=1757872800003"></script>
+    <script>
+        browserType();
+        var batch = {"code":"d6d090c4364342bc94de17a22eaf7068","name":"2025\u5E74\u79CB\u5B63\u5B66\u671F\u8865\u9000\u9009\u542B\u91CD\u4FEE","schoolTerm":"2025-2026-1","schoolTermName":"2025\u79CB\u5B63","weekRange":"1-17\u5468","morningSectionNumber":"0","morningSectionList":null,"afternoonSectionNumber":"0","afternoonSectionList":null,"nightSectionNumber":"0","nightSectionList":null,"beginTime":"2025-09-08 13:00:00","endTime":"2025-09-19 17:00:00","active":"1","tacticCode":"01","tacticName":"\u53EF\u9009\u53EF\u9000","typeCode":"02","typeName":"\u6B63\u9009","clazzTypeList":["TJKC","FANKC","FAWKC","CXKC","YYKC","TYKC","XGKC","KYKT","ALLKC"],"displayTJKC":"1","displayFANKC":"1","displayFAWKC":"1","displayCXKC":"1","displayTYKC":"1","displayXGKC":"1","displayFXKC":"0","displayALLKC":"1","displayYJSKC":"0","retakeNoCheckClassCapacity":"1","retakeNoCheckTimeConflict":"1","retakeNoCheckTimeConflictPart":"0","retakeNoCheckCredit":"0","refreshNoCheckClassCapacity":"1","refreshNoCheckTimeConflict":"1","retakeMultiCampus":"1","retakeMultiCampusList":[{"electiveBatchCode":"d6d090c4364342bc94de17a22eaf7068","retakeControl":"1","campusCodes":"1,2"}],"notRetakeMultiCampus":"0","notRetakeMultiCampusList":[],"multiTeachCampus":"0","noCheckTimeConflict":"0","allowNotRegist":"0","allowNotPay":"1","allowNotEval":"1","checkStudied":"0","checkPassed":"0","noSelectSelfCollegeCourse":"0","allowRetake":"1","noDisplayClassRoom":"0","noCheckExamTime":"1","needConfirm":"0","confirmInfo":null,"noCrossLevel":"0","onlyRetakeCanDel":"0","canSelectBook":"0","canDeleteBook":"0","canSelectCurrent":"0","noCheckLimitFx":"0","noCheckLimitCx":"1","noCheckLimitFan":"0","disDropCode":null,"batchType":"01","canDeleteCourseType":null,"xksm":null,"fawSelectSelfCollegeCourse":"0","useTodayTime":"0","todayBeginTime":null,"todayEndTime":null,"bybz":"0","displayKYKT":"1","displayYYKC":"1"};
+        loginVue.isLdapLogin = false;
+        loginVue.inApp = false;
+        loginVue.i18nEnabled = false;
+        loginVue.loginForm.aesKey = "MWMqg2tPcDkxcm11";
+        loginVue.loginForm.namePlaceHolder = "\u8BF7\u8F93\u5165\u5B66\u53F7";
+        loginVue.casServerLogoutUrl = "https:\/\/sso.buaa.edu.cn\/logout";
+        loginVue.changePasswordUrl = null
+        loginVue.authType = "cas"
+        loginVue.casTokenStore = "cookie"
+        loginVue.urlmaps = null
+        loginVue.oauthLogoutUrl = null
+        loginVue.loginInUserRegister(batch);
+        loginVue.toLogin();
+    </script>
+</body>
+
+</html>

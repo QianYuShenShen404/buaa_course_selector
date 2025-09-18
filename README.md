@@ -72,11 +72,30 @@ python main.py -u 学号 -p 密码 -c 课程名称
 │   ├── course_service.py    # 统一服务接口
 │   ├── config_loader.py     # 配置管理
 │   └── logger.py           # 日志管理
+├── sample/
+│   └── all_in_one.py       # 简化版本（单文件版）
 ├── main.py                 # 主程序入口
 ├── config.json            # 配置文件
 ├── requirements.txt       # 依赖清单
 └── README.md
 ```
+
+### 🔧 简化版本说明
+
+`sample/all_in_one.py` 是该项目的简化版本，将所有核心功能模块整合到一个Python文件中，适合以下场景：
+
+- **快速体验**: 无需了解复杂的模块结构，直接运行即可
+- **学习参考**: 所有代码逻辑集中在一处，便于理解选课流程
+- **轻量部署**: 只需一个文件即可完成选课功能
+- **自定义修改**: 方便直接在文件中修改用户名、密码等配置
+
+**使用方法：**
+```bash
+# 直接运行简化版本
+python sample/all_in_one.py
+```
+
+**注意：** 使用前请在文件中修改 `USERNAME`、`PASSWORD` 和 `CLASSNAME` 变量。
 
 ## ⚙️ 配置说明
 

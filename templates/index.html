@@ -1,0 +1,31 @@
+{% extends "base.html" %} {% block title %}北航自动选课系统 - 智能选课助手{%
+endblock %} {% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <!-- 主标题 -->
+      <div class="text-center mb-4">
+        <h1 class="main-title">🎓 北航自动选课系统</h1>
+        <p class="text-muted">
+          智能化Web界面 <span class="feature-badge">架构优化版</span>
+        </p>
+      </div>
+
+      <!-- 登录面板 -->
+      {% include "components/login_panel.html" %}
+
+      <!-- 主操作面板 -->
+      {% include "components/main_panel.html" %}
+
+      <!-- 底部信息 -->
+      <div class="text-center mt-4 mb-4">
+        <small class="text-muted">
+          🔧 模块化架构设计 | 📡 WebSocket实时通信 | 🎨 Bootstrap 5 响应式UI
+        </small>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block extra_scripts %}
+<!-- 页面专用JavaScript脚本将在app.js之后加载 -->
+{% endblock %}

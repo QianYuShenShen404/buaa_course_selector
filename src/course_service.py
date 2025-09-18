@@ -42,6 +42,9 @@ class CourseService:
         self.course_search = None
         self.course_selector = None
         
+        # 停止标志位控制
+        self.stop_auto_select_flag = False
+        
         self.logger.info("课程服务初始化完成")
 
     def login(self):
@@ -103,7 +106,7 @@ class CourseService:
             self.logger.error(f"搜索过程异常: {e}")
             return {'success': False, 'error': str(e)}
 
-    def select_course(self, attempts=1):
+    def select_course(self):
         """选择课程"""
         if not self.course_selector or not self.course_search:
             print("❌ 请先完成登录和搜索")
@@ -124,7 +127,6 @@ class CourseService:
         print("\n" + "=" * 30)
         print("📚 开始选课...")
         self.logger.info("开始选课")
-        self.logger.info(f"第{attempts}次选课")
         
         try:
             # 调用选课功能
@@ -144,8 +146,8 @@ class CourseService:
             self.logger.error(f"选课过程异常: {e}")
             return {'success': False, 'error': str(e)}
 
-    def auto_select_course(self, course_name):
-        """自动选课 - 整合搜索和选课"""
+    def auto_select_course(self, retry_interval=1):
+        """自动选课 - 整合搜索和选课（同步版本）"""
         if not self.auth_service:
             login_success = self.login()
             if not login_success:
@@ -153,12 +155,12 @@ class CourseService:
         
         print("\n" + "=" * 30)
         print("🎯 启动自动选课模式")
-        self.logger.info(f"启动自动选课模式 - 课程: {course_name}")
+        self.logger.info(f"启动自动选课模式 - 课程: {self.course_search.get_class_name()}")
         
         try:
             # 调用自动选课功能
-            success = self.course_selector.auto_select_by_keyword(
-                self.course_search, course_name
+            success = self.course_selector.auto_select(
+                self.course_search, retry_interval
             )
             
             if success:
@@ -171,62 +173,29 @@ class CourseService:
             self.logger.error(f"自动选课异常: {e}")
             return {'success': False, 'error': str(e)}
 
-    def run_complete_flow(self, course_name):
-        """完整流程执行"""
-        print("🎓 北航选课系统 - 重构版")
-        print("=" * 50)
-        self.logger.info(f"开始完整选课流程 - 课程: {course_name}")
+    async def auto_select_course_async(self, retry_interval=1, websocket_manager=None, session_id=None):
+        """异步自动选课 - 整合搜索和选课（异步版本）"""
+        if not self.auth_service:
+            login_success = self.login()
+            if not login_success:
+                return {'success': False, 'error': '登录失败'}
+        
+        self.logger.info(f"启动异步自动选课模式 - 课程: {self.course_search.get_class_name() if self.course_search else '未知'}")
         
         try:
-            # 第一步：登录
-            if not self.login():
-                return {'success': False, 'error': '登录失败，程序终止'}
+            # 调用异步自动选课功能
+            success = await self.course_selector.auto_select_async(
+                self.course_search, retry_interval, websocket_manager, session_id
+            )
             
-            # 第二步：搜索课程获取secretVal
-            search_result = self.search_course(course_name)
-            if not search_result.get('success', True):
-                return {'success': False, 'error': '搜索失败'}
-            
-            # 第三步：选课测试
-            if self.course_search.get_secret_val():
-                select_result = self.select_course()
-                
-                if select_result['success']:
-                    print("🎉 完整流程执行成功！")
-                    self.logger.info("完整流程执行成功")
-                    return {'success': True, 'message': '选课成功'}
-                else:
-                    print(f"❌ 选课失败: {select_result['error']}")
-                    
-                    # 询问是否启动自动选课
-                    print("\n" + "-" * 40)
-                    auto_choice = input("是否启动自动选课？(y/n): ").strip().lower()
-                    if auto_choice == 'y':
-                        system_config = self.config.get_system_config()
-                        max_attempts = 10  # 默认值，可以从配置读取
-                        auto_result = self.auto_select_course(course_name, max_attempts)
-                        return auto_result
-                    else:
-                        return select_result
+            if success:
+                return {'success': True, 'message': '异步自动选课成功'}
             else:
-                error_msg = "未获取到secretVal，无法进行选课"
-                print(f"❌ {error_msg}")
-                self.logger.error(error_msg)
-                return {'success': False, 'error': error_msg}
+                return {'success': False, 'error': '异步自动选课失败'}
                 
         except Exception as e:
-            print(f"❌ 完整流程执行异常: {e}")
-            self.logger.error(f"完整流程执行异常: {e}")
+            self.logger.error(f"异步自动选课异常: {e}")
             return {'success': False, 'error': str(e)}
-
-    def get_status(self):
-        """获取服务状态"""
-        return {
-            'authenticated': self.auth_service is not None and self.auth_service.is_authenticated(),
-            'search_ready': self.course_search is not None,
-            'selector_ready': self.course_selector is not None,
-            'username': self.username
-        }
 
     def cleanup(self):
         """清理资源"""
@@ -234,3 +203,17 @@ class CourseService:
             self.course_search.clear_results()
         
         self.logger.info("课程服务资源清理完成")
+
+    def set_stop_auto_select_flag(self):
+        """设置停止自动选课标志"""
+        self.stop_auto_select_flag = True
+        self.logger.info("停止自动选课标志已设置")
+
+    def should_stop_auto_select(self):
+        """检查是否应该停止自动选课"""
+        return self.stop_auto_select_flag
+
+    def clear_stop_auto_select_flag(self):
+        """清除停止标志"""
+        self.stop_auto_select_flag = False
+        self.logger.info("停止自动选课标志已清除")

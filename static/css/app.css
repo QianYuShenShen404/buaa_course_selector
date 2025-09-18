@@ -1,0 +1,196 @@
+/* 北航选课系统 Web应用样式文件 */
+
+/* 基础布局 */
+body {
+    padding-top: 20px;
+    background-color: #f8f9fa;
+}
+
+/* 日志区域 */
+.log-area {
+    height: 350px;
+    overflow-y: scroll;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 15px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    border-radius: 5px;
+}
+
+/* 状态样式 */
+.status-info {
+    background-color: #d1ecf1;
+    padding: 8px;
+    margin: 3px 0;
+    border-radius: 3px;
+}
+
+.status-success {
+    background-color: #d4edda;
+    padding: 8px;
+    margin: 3px 0;
+    border-radius: 3px;
+}
+
+.status-error {
+    background-color: #f8d7da;
+    padding: 8px;
+    margin: 3px 0;
+    border-radius: 3px;
+}
+
+.status-warning {
+    background-color: #fff3cd;
+    padding: 8px;
+    margin: 3px 0;
+    border-radius: 3px;
+}
+
+/* 卡片头部渐变 */
+.card-header {
+    background: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%);
+    color: white;
+}
+
+/* 主标题渐变 */
+.main-title {
+    background: linear-gradient(135deg, #6610f2 0%, #0d6efd 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: bold;
+}
+
+/* 课程卡片 */
+.course-card {
+    border-left: 4px solid #28a745;
+}
+
+/* 加载动画 */
+.loading-spinner {
+    display: none;
+}
+
+/* 停止按钮危险样式 */
+.btn-stop {
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+    color: white !important;
+    animation: pulse-danger 2s infinite;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3);
+}
+
+.btn-stop:hover {
+    background-color: #c82333 !important;
+    border-color: #bd2130 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.4);
+}
+
+.btn-stop:active {
+    background-color: #a71e2a !important;
+    border-color: #9c1a26 !important;
+    transform: translateY(0);
+}
+
+/* 危险按钮脉冲动画 */
+@keyframes pulse-danger {
+    0% {
+        box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3);
+        transform: scale(1);
+    }
+
+    50% {
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.6);
+        transform: scale(1.02);
+    }
+
+    100% {
+        box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3);
+        transform: scale(1);
+    }
+}
+
+/* 按钮组 */
+.btn-group-custom .btn {
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+/* 特性标签 */
+.feature-badge {
+    background: linear-gradient(45deg, #28a745, #20c997);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.8em;
+    margin-left: 5px;
+}
+
+/* 动画效果 */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 脉冲动画 */
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+
+    .col-md-4,
+    .col-md-6,
+    .col-md-8 {
+        margin-bottom: 15px;
+    }
+
+    .main-title {
+        font-size: 1.8rem;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .log-area {
+        height: 250px;
+    }
+
+    .btn-group-custom .btn {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+}

@@ -1,5 +1,7 @@
 import json
 import time
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
 try:
     from .logger import get_logger
 except ImportError:
@@ -96,41 +98,47 @@ class CourseSelector:
             traceback.print_exc()
             return {'success': False, 'error': str(e)}
 
-    def auto_select_by_keyword(self, course_search, keyword):
+    def auto_select(self, course_search, retry_interval = 1):
         """根据关键词自动搜索并选课"""
         print(f"🎯 自动选课功能启动")
-        print(f"🔍 搜索关键词: {keyword}")
         print(f"🔄 无限循环选课")
-        self.logger.info(f"自动选课启动 - 关键词: {keyword}")
-        attempt = 0
+        self.logger.info(f"自动选课启动")
 
+        # # 搜索课程
+        # search_result = course_search.search_courses()
+        #
+        # if not search_result.get('success', True):  # 如果搜索失败
+        #     print(f"❌ 搜索失败")
+        #     self.logger.error(f"搜索失败")
+        #     return False
+
+        # 检查是否有secretVal
+        if not course_search.get_secret_val():
+            print(f"❌ 未获取到secretVal")
+            self.logger.error(f"未获取到secretVal")
+            return False
+
+        # 获取课程ID
+        clazz_id = course_search.get_classid()
+        if not clazz_id:
+            print(f"❌ 未获取到课程ID")
+            self.logger.error(f"未获取到课程ID")
+            return False
+
+        attempt = 0
         while True:
+            # 在每次循环开始时检查停止标志
+            if hasattr(self.auth_service, 'course_service'):
+                course_service = getattr(self.auth_service, 'course_service')
+                if course_service and course_service.should_stop_auto_select():
+                    print("🛑 用户请求停止自动选课")
+                    self.logger.info("用户请求停止自动选课")
+                    return False
+            
             attempt += 1
             print(f"\n🔄 第 {attempt} 次尝试...")
             self.logger.info(f"第 {attempt} 次尝试自动选课")
-
-            # 搜索课程
-            search_result = course_search.search_courses(keyword=keyword)
-
-            if not search_result.get('success', True):  # 如果搜索失败
-                print(f"❌ 第 {attempt} 次搜索失败")
-                self.logger.error(f"第 {attempt} 次搜索失败")
-                return False
-
-            # 检查是否有secretVal
-            if not course_search.get_secret_val():
-                print(f"❌ 第 {attempt} 次未获取到secretVal")
-                self.logger.error(f"第 {attempt} 次未获取到secretVal")
-                return False
-
-            # 获取课程ID
-            clazz_id = course_search.get_classid()
-            if not clazz_id:
-                print(f"❌ 第 {attempt} 次未获取到课程ID")
-                self.logger.error(f"第 {attempt} 次未获取到课程ID")
-                return False
-
-            print(f"🎯 尝试选课 - 课程ID: {clazz_id}")
+            print(f"🎯 尝试选课 - 课程名字: {course_search.get_class_name()}")
 
             # 进行选课
             select_result = self.select_course(clazz_id, course_search.get_secret_val())
@@ -144,9 +152,10 @@ class CourseSelector:
                 self.logger.error(f"第 {attempt} 次选课失败: {select_result['error']}")
 
                 # 如果是余量不足，可以继续尝试
-                if "余量不足" in select_result['error'] or "已满" in select_result['error']:
-                    print(f"⏳ 课程已满，等待下次尝试...")
-                    time.sleep(2)  # 等待2秒再试
+                if "课容量已满" in select_result['error']:
+                    print(f"⏳ 课程已满，等待{retry_interval}s后进行下次尝试...")
+                    # 实现高频停止检查的等待
+                    self._interruptible_sleep(retry_interval)
                 else:
                     print(f"💔 选课失败，原因: {select_result['error']}")
                     break
@@ -155,81 +164,107 @@ class CourseSelector:
         self.logger.error(f"自动选课失败，已尝试 {attempt} 次")
         return False
 
-    def select_course_with_retry(self, clazz_id, secret_val, clazz_type="FANKC", 
-                                max_retries=3, retry_interval=2):
-        """带重试的选课功能"""
-        print(f"🔄 启动重试选课 - 最大重试次数: {max_retries}")
-        self.logger.info(f"启动重试选课 - 课程ID: {clazz_id}, 最大重试次数: {max_retries}")
+    def _interruptible_sleep(self, total_seconds):
+        """可中断的睡眠，实现高频停止检查"""
+        sleep_interval = 0.1  # 每次睡眠0.1秒
+        elapsed = 0
         
-        for attempt in range(1, max_retries + 1):
-            print(f"\n🔄 第 {attempt} 次选课尝试...")
+        while elapsed < total_seconds:
+            # 检查停止标志
+            if hasattr(self.auth_service, 'course_service'):
+                course_service = getattr(self.auth_service, 'course_service')
+                if course_service and course_service.should_stop_auto_select():
+                    print("🛑 在等待期间检测到停止信号")
+                    return  # 立即返回，不继续等待
             
-            result = self.select_course(clazz_id, secret_val, clazz_type)
-            
-            if result['success']:
-                print(f"🎉 选课成功！")
-                return result
-            else:
-                error_msg = result['error']
-                print(f"❌ 第 {attempt} 次失败: {error_msg}")
-                
-                # 检查是否需要重试
-                if attempt < max_retries:
-                    if "余量不足" in error_msg or "已满" in error_msg or "网络" in error_msg:
-                        print(f"⏳ {retry_interval}秒后重试...")
-                        time.sleep(retry_interval)
-                    else:
-                        print(f"💔 不可重试的错误，停止重试")
-                        break
-                else:
-                    print(f"❌ 已达到最大重试次数")
-        
-        return {'success': False, 'error': f'重试{max_retries}次后仍然失败'}
+            # 短时间睡眠
+            actual_sleep = min(sleep_interval, total_seconds - elapsed)
+            time.sleep(actual_sleep)
+            elapsed += actual_sleep
 
-    def batch_select_courses(self, course_list, max_attempts_per_course=3):
-        """批量选课功能"""
-        print(f"📚 开始批量选课 - 共 {len(course_list)} 门课程")
-        self.logger.info(f"开始批量选课 - 共 {len(course_list)} 门课程")
+    async def auto_select_async(self, course_search, retry_interval=1, websocket_manager=None, session_id=None):
+        """异步自动选课，支持实时状态推送"""
+        self.logger.info(f"异步自动选课启动")
         
-        results = []
+        # 通过WebSocket发送状态更新
+        async def send_status(message, level='info'):
+            if websocket_manager and session_id:
+                await websocket_manager.send_personal_message(json.dumps({
+                    "type": "status_update",
+                    "message": message,
+                    "level": level
+                }, ensure_ascii=False), session_id)
+
+        await send_status("🎯 异步自动选课启动", "info")
         
-        for i, course_info in enumerate(course_list):
-            print(f"\n📋 选课进度: {i+1}/{len(course_list)}")
+        # 检查是否有secretVal
+        if not course_search.get_secret_val():
+            await send_status("❌ 未获取到secretVal", "error")
+            return False
+
+        # 获取课程ID
+        clazz_id = course_search.get_classid()
+        if not clazz_id:
+            await send_status("❌ 未获取到课程ID", "error")
+            return False
+
+        attempt = 0
+        while True:
+            # 在每次循环开始时检查停止标志
+            if hasattr(self.auth_service, 'course_service'):
+                course_service = getattr(self.auth_service, 'course_service')
+                if course_service and course_service.should_stop_auto_select():
+                    await send_status("🛑 用户请求停止自动选课", "warning")
+                    return False
             
-            clazz_id = course_info.get('clazz_id')
-            secret_val = course_info.get('secret_val')
-            clazz_type = course_info.get('clazz_type', 'FANKC')
-            course_name = course_info.get('course_name', f'课程{i+1}')
-            
-            if not clazz_id or not secret_val:
-                error_msg = f"课程 {course_name} 缺少必要参数"
-                print(f"❌ {error_msg}")
-                results.append({
-                    'course_name': course_name,
-                    'success': False,
-                    'error': error_msg
-                })
-                continue
-            
-            print(f"🎯 正在选课: {course_name}")
-            
-            result = self.select_course_with_retry(
-                clazz_id, secret_val, clazz_type, 
-                max_retries=max_attempts_per_course
-            )
-            
-            result['course_name'] = course_name
-            results.append(result)
-            
-            if result['success']:
-                print(f"✅ {course_name} 选课成功")
+            attempt += 1
+            await send_status(f"🔄 第 {attempt} 次尝试选课 - {course_search.get_class_name()}", "info")
+
+            # 在线程池中执行选课操作
+            loop = asyncio.get_event_loop()
+            with ThreadPoolExecutor() as executor:
+                select_result = await loop.run_in_executor(
+                    executor, 
+                    self.select_course, 
+                    clazz_id, 
+                    course_search.get_secret_val()
+                )
+
+            if select_result['success']:
+                await send_status("🎉 自动选课成功！", "success")
+                return True
             else:
-                print(f"❌ {course_name} 选课失败: {result['error']}")
+                await send_status(f"❌ 第 {attempt} 次选课失败: {select_result['error']}", "error")
+
+                # 如果是余量不足，可以继续尝试
+                if "课容量已满" in select_result['error'] or "该课程已在选课结果中" in select_result['error']:
+                    await send_status(f"⏳ 课程已满，等待{retry_interval}s后进行下次尝试...", "warning")
+                    # 异步等待并高频检查停止标志
+                    if not await self._async_interruptible_sleep(retry_interval):
+                        await send_status("🛑 在等待期间检测到停止信号", "warning")
+                        return False
+                else:
+                    await send_status(f"💔 选课失败，原因: {select_result['error']}", "error")
+                    return False
+
+        await send_status(f"❌ 自动选课失败，已尝试 {attempt} 次", "error")
+        return False
+
+    async def _async_interruptible_sleep(self, total_seconds):
+        """异步可中断的睡眠，实现高频停止检查"""
+        sleep_interval = 0.1  # 每次睡眠0.1秒
+        elapsed = 0
         
-        # 统计结果
-        success_count = sum(1 for r in results if r['success'])
-        print(f"\n📊 批量选课完成:")
-        print(f"  ✅ 成功: {success_count} 门")
-        print(f"  ❌ 失败: {len(results) - success_count} 门")
+        while elapsed < total_seconds:
+            # 检查停止标志
+            if hasattr(self.auth_service, 'course_service'):
+                course_service = getattr(self.auth_service, 'course_service')
+                if course_service and course_service.should_stop_auto_select():
+                    return False  # 返回false表示被中断
+            
+            # 异步短时间睡眠
+            actual_sleep = min(sleep_interval, total_seconds - elapsed)
+            await asyncio.sleep(actual_sleep)
+            elapsed += actual_sleep
         
-        return results
+        return True  # 返回true表示正常完成

@@ -82,31 +82,12 @@ def main():
 
         # 第三步：选课
         if service.course_search.get_secret_val():
-            attempts = 0
-            while True:
-                attempts += 1
-                print("\n" + "=" * 30)
-                print("🎯 开始选课测试...")
-                print(f"第 {attempts} 次尝试选课...")
-
-                result = service.select_course(attempts)
-
-                if result['success']:
-                    print("🎉 选课成功！")
-                    break
-                else:
-                    print(f"❌ 第 {attempts} 次选课失败: {result['error']}")
-
-                    # 如果是余量不足，可以继续尝试
-                    if "课容量已满" in result['error']:
-                        print(f"⏳ 课程已满，等待下次尝试...")
-                    else:
-                        print(f"💔 选课失败，原因: {result['error']}")
-                        break
-
-                if system_config.get('course_selection_mode', 'once') == 'once':
-                    break
-                time.sleep(system_config.get('retry_interval', 1))
+            if system_config.get('course_selection_mode', 'once') == 'once':
+                service.select_course()
+            elif system_config.get('course_selection_mode', 'once') == 'loop':
+                service.auto_select_course(course_name, system_config.get('retry_interval', 1))
+            else:
+                print("❌ 配置文件错误，请检查 course_selection_mode 是否正确")
         else:
             print("❌ 未获取到secretVal，无法进行选课")
         

@@ -1,0 +1,86 @@
+<!-- 主操作面板组件 -->
+<div id="mainPanel" class="card shadow mt-4" style="display: none">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h3 class="mb-0">🎯 选课操作中心</h3>
+    <div>
+      <button id="statusBtn" class="btn btn-outline-light btn-sm me-2">
+        📊 状态
+      </button>
+      <button id="logoutBtn" class="btn btn-outline-light btn-sm">登出</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <!-- 用户信息栏 -->
+    <div
+      id="userInfo"
+      class="alert alert-primary d-flex justify-content-between align-items-center mb-4"
+    >
+      <div>
+        <strong>👤 欢迎回来！</strong>
+        <span id="userInfoText">正在加载用户信息...</span>
+      </div>
+      <div class="badge bg-success">已登录</div>
+    </div>
+
+    <!-- 第一步：搜索课程 -->
+    <div class="mb-4">
+      <h5 class="border-bottom pb-2">📅 第一步：搜索课程</h5>
+      <div class="row">
+        <div class="col-md-8">
+          <div class="input-group">
+            <input
+              type="text"
+              id="searchKeyword"
+              class="form-control"
+              placeholder="输入课程关键词，如：计算机图形学"
+            />
+            <button id="searchBtn" class="btn btn-outline-primary">
+              🔍 搜索
+            </button>
+          </div>
+        </div>
+      </div>
+      <small class="text-muted"
+        >💡 提示：搜索会自动获取选课所需的secretVal参数</small
+      >
+    </div>
+
+    <!-- 课程结果显示 -->
+    <div id="courseResults" class="mb-4"></div>
+
+    <!-- 第二步：选课操作 -->
+    <div class="mb-4">
+      <h5 class="border-bottom pb-2">🎯 第二步：选课操作</h5>
+      <div class="btn-group-custom">
+        <button id="selectOnceBtn" class="btn btn-success" disabled>
+          🎯 单次选课
+        </button>
+        <button id="selectAutoBtn" class="btn btn-warning" disabled>
+          🔄 自动重试选课
+        </button>
+        <button
+          id="stopSelectBtn"
+          class="btn btn-danger btn-stop"
+          style="display: none"
+        >
+          🛑 停止自动选课
+        </button>
+      </div>
+      <small class="text-muted d-block"
+        >💡 请先搜索课程，获取选课参数后即可开始选课</small
+      >
+    </div>
+
+    <!-- 第三步：实时监控 -->
+    <div>
+      <h5 class="border-bottom pb-2">📊 第三步：实时状态监控</h5>
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <small class="text-muted">实时显示选课过程和结果</small>
+        <button id="clearLogBtn" class="btn btn-outline-secondary btn-sm">
+          🗑️ 清空日志
+        </button>
+      </div>
+      <div id="statusLog" class="log-area"></div>
+    </div>
+  </div>
+</div>

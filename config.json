@@ -1,0 +1,14 @@
+{
+  "user": {
+    "student_id": "",
+    "password": "",
+    "target_course_name": ""
+  },
+  "system": {
+    "log_level": "INFO",
+    "retry_interval": 1,
+    "course_selection_mode": "loop",
+    "max_log_files": 10,
+    "log_file_size": "10MB"
+  }
+}

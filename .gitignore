@@ -1,12 +1,25 @@
-# Byte-compiled / optimized / DLL files
+# 操作系统文件
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# 编辑器和IDE文件
+.vscode/
+.idea/
+.qoder/
+*.swp
+*.swo
+*~
+
+# Python相关
 __pycache__/
 *.py[cod]
 *$py.class
-
-# C extensions
 *.so
-
-# Distribution / packaging
 .Python
 build/
 develop-eggs/
@@ -20,88 +33,12 @@ parts/
 sdist/
 var/
 wheels/
-pip-wheel-metadata/
-share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
 MANIFEST
 
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
-
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py,cover
-.hypothesis/
-.pytest_cache/
-
-# Translations
-*.mo
-*.pot
-
-# Django stuff:
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
-
-# Flask stuff:
-instance/
-.webassets-cache
-
-# Scrapy stuff:
-.scrapy
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-target/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# IPython
-profile_default/
-ipython_config.py
-
-# pyenv
-.python-version
-
-# pipenv
-#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
-#   However, in case of collaboration, if having platform-specific dependencies or dependencies
-#   having no cross-platform support, pipenv may install dependencies that don't work, or not
-#   install all needed dependencies.
-#Pipfile.lock
-
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow
-__pypackages__/
-
-# Celery stuff
-celerybeat-schedule
-celerybeat.pid
-
-# SageMath parsed files
-*.sage.py
-
-# Environments
+# 虚拟环境
 .env
 .venv
 env/
@@ -110,67 +47,100 @@ ENV/
 env.bak/
 venv.bak/
 
-# Spyder project settings
-.spyderproject
-.spyproject
+# Node.js相关（前端）
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.npm
+.eslintcache
+.yarn-integrity
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# Rope project settings
-.ropeproject
+# 前端构建输出
+frontend/dist/
+frontend/build/
 
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# Pyre type checker
-.pyre/
-
-# Project-specific files
-# Configuration files with sensitive information
-config.json
-config_simple.json
-*.json.bak
-
-# Log files
+# 日志文件
 log/
 logs/
 *.log
 
-# IDE files
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
+# 配置文件（包含敏感信息）
+config_simple.json
+config_personal.json
+user_config.json
+.env
 
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
+# 缓存目录
+.cache/
+.parcel-cache/
 
-# Playwright
-playwright-report/
-test-results/
-tests/test-results/
-tests/playwright-report/
+# 测试覆盖报告
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
 
-# Temporary files
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# 临时文件
 *.tmp
 *.temp
 temp/
 tmp/
 
-# Browser downloads
-downloads/
+# 数据库文件
+*.db
+*.sqlite
+*.sqlite3
 
-# Personal notes and TODO files
-TODO.md
-NOTES.md
-notes.txt
+# 备份文件
+*.bak
+*.backup
+*.old
+
+# 压缩文件
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Windows特定
+*.exe
+*.msi
+*.msm
+*.msp
+
+# macOS特定
+.Spotlight-V100
+.Trashes
+
+# Linux特定
+*~
+
+# 项目特定
+# 排除包含用户隐私信息的配置文件
+config_with_credentials.json
+secrets.json

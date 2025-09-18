@@ -23,12 +23,14 @@ class CourseSearch:
         self.search_results = []
         self.classid = None
         self.secret_val = None
+        self.class_name = None
 
     def search_courses(self, keyword=""):
         """搜索课程 - 使用固定参数+关键词"""
         if keyword:
             print(f"🔍 搜索关键词: {keyword}")
             self.logger.info(f"搜索关键词: {keyword}")
+            self.class_name = keyword
         else:
             print("🔍 获取所有课程...")
             self.logger.info("获取所有课程")
@@ -47,6 +49,9 @@ class CourseSearch:
             # 只有当有关键词时才添加KEY字段
             if keyword:
                 search_data["KEY"] = keyword
+            elif keyword == "":
+                print("⚠️ 未指定关键词，请输入一个课程名称")
+                return {'success': False, 'error': '未输入课程名称'}
 
             print(f"📤 请求数据: {json.dumps(search_data, ensure_ascii=False)}")
 
@@ -140,6 +145,10 @@ class CourseSearch:
     def get_secret_val(self):
         """获取secretVal"""
         return self.secret_val
+
+    def get_class_name(self):
+        """获取课程名字"""
+        return self.class_name
 
     def has_search_results(self):
         """检查是否有搜索结果"""

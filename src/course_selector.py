@@ -237,7 +237,7 @@ class CourseSelector:
                 await send_status(f"❌ 第 {attempt} 次选课失败: {select_result['error']}", "error")
 
                 # 如果是余量不足，可以继续尝试
-                if "课容量已满" in select_result['error'] or "该课程已在选课结果中" in select_result['error']:
+                if "课容量已满" in select_result['error']:
                     await send_status(f"⏳ 课程已满，等待{retry_interval}s后进行下次尝试...", "warning")
                     # 异步等待并高频检查停止标志
                     if not await self._async_interruptible_sleep(retry_interval):

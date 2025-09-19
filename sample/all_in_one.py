@@ -476,8 +476,8 @@ def main():
     print("=" * 50)
 
     # 配置信息 - 请修改这里
-    USERNAME = "23371020"  # 👈 请修改
-    PASSWORD = "cc2005012"  # 👈 请修改
+    USERNAME = ""  # 👈 请修改
+    PASSWORD = ""  # 👈 请修改
     CLASSNAME = "虚拟现实技术"
 
     # 创建实例
